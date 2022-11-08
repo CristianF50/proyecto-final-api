@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Types;
 const db = require("../models");
 const Usuarios = db.usuario;
 var bcrypt = require("bcryptjs");
@@ -93,20 +95,20 @@ exports.add = async ({ body }, response) => {
 exports.update = async ({ body, user }, response) => {
     console.log("usuario", body)
     let userReq = user
-    Usuarios.findOne({ _id: body._id }).select('-password')
+    Usuarios.findOne({ _id: body.id }).select('-password')
         .then(async (user) => {
 
-            if (user == null) return response.status(404).json({ err, message: '¡Usuario no encontrado!' })
+            if (user == null) return response.status(404).json({  message: '¡Usuario no encontrado!' })
 
-            if (body.nombre !== undefined) user.nombre = body.nombrs;
+            if (body.nombre !== undefined) user.nombre = body.nombre;
             if (body.password !== undefined) user.password = bcrypt.hashSync(body.password, 8);
             if (body.email !== undefined) user.email = body.email;
 
-            return response.status(200).json({
+            user.save().then(() => {return response.status(200).json({
                 success: true,
                 user: user,
                 message: 'Usuario Actualizado!'
-            })
+            })})
         })
         .catch(error => {
             console.log(error)
@@ -119,7 +121,7 @@ exports.update = async ({ body, user }, response) => {
 };
 
 exports.delete = async ({ query }, response) => {
-
+    console.log(query)
     await Usuarios.deleteOne({ _id: query.id }).then(function () {
         return response.status(200).json({
             success: true,

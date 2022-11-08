@@ -12,6 +12,20 @@ exports.list = async ({ query }, res) => {
     let buscar = (query.buscar == undefined) ? '.*' : query.buscar + '.*'
 
     let pipeline = [
+        
+            {
+              '$lookup': {
+                'from': 'ciudads', 
+                'localField': 'ciudad', 
+                'foreignField': '_id', 
+                'as': 'ciudad'
+              }
+            }, {
+              '$unwind': {
+                'path': '$ciudad'
+              }
+            },
+          
         {
             $sort: { fecha: 1 }
         }
@@ -51,7 +65,7 @@ exports.list = async ({ query }, res) => {
             },
             sort: { fecha: 1 }
         };
-        turnos = await Citas.aggregatePaginate(Citas.aggregate(pipeline), options)
+        turnos = await Turno.aggregatePaginate(Turno.aggregate(pipeline), options)
     }
 
 
@@ -164,3 +178,19 @@ exports.update = async ({ body }, res) => {
         })
     })
 }
+
+exports.delete = async ({ query }, response) => {
+    console.log(query)
+    await Turno.deleteOne({ _id: query.id }).then(function () {
+        return response.status(200).json({
+            success: true,
+            message: 'Turno Eliminado!'
+        })
+    }).catch(function (error) {
+        return response.status(400).json({
+            success: false,
+            message: handleError(err)
+        });
+    });
+
+};
