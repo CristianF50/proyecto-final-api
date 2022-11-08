@@ -7,6 +7,14 @@ const Ciudad = mongoose.Schema(
           turno: {
                type: Number,
                default: 0
+          },
+          resuelto: {
+               type: Number,
+               default: 0
+          },
+          pendiente: {
+               type: Number,
+               default: 0
           }
      });
 

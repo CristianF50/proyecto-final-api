@@ -69,7 +69,7 @@ exports.add = async ({ body }, res) => {
     console.log(ciudad)
 
     let noturno = ciudad.turno + 1
-
+    let nores = ciudad.pendiente + 1
 
 
 
@@ -95,6 +95,7 @@ exports.add = async ({ body }, res) => {
             return;
         }
         ciudad.turno = noturno
+        ciudad.pendiente = nores
         ciudad.save()
 
         info = await Turno.findOne({ _id: turno._id }).populate('ciudad')

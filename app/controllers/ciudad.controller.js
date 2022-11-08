@@ -1,3 +1,6 @@
+const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Types;
+
 const config = require("../config/auth.config");
 const { producto } = require("../models");
 const db = require("../models");
@@ -39,6 +42,31 @@ exports.list = async ({query}, res) => {
     })
   
 };
+
+exports.dashboard = async (req, res) => {
+
+    let pipeline =[
+        {
+          '$group': {
+            '_id': ObjectId(req.params._id ?? null), 
+            'resueltos': {
+              '$sum': '$resuelto'
+            }, 
+            'pendiente': {
+              '$sum': '$pendiente'
+            }
+          }
+        }
+      ]
+
+    let ciudad = await Ciudad.aggregate(pipeline);
+
+    return res.status(200).json({
+        success: true,
+        message: 'Consulta exitosa',
+        data: ciudad
+    })
+}
 
 /* exports.get = async ({query}, res) => {
     

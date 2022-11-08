@@ -19,4 +19,7 @@ const Usuario = mongoose.Schema(
     ]
   }
 );
+
+Usuario.plugin(mongoosePaginate);
+Usuario.plugin(MongooseAggregatePaginateV2);
 module.exports = mongoose.model('usuario', Usuario);
