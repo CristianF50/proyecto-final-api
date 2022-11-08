@@ -2,9 +2,12 @@
 // entre el servidor y MongoDB
 
 const mongoose = require("mongoose");
-const Usuario = mongoose.model(
-  "Usuario",
-  new mongoose.Schema({
+const mongoosePaginate = require('mongoose-paginate-v2');
+const MongooseAggregatePaginateV2 = require('mongoose-aggregate-paginate-v2');
+
+
+const Usuario = mongoose.Schema(
+  {
     email: String,
     clave: String,
     nombre: String,
@@ -14,6 +17,6 @@ const Usuario = mongoose.model(
         ref: "Rol"
       }
     ]
-  })
+  }
 );
-module.exports = Usuario;
+module.exports = mongoose.model('usuario', Usuario);

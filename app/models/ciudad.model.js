@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
-const Ciudad = mongoose.model(
-"Ciudad",    
-new mongoose.Schema({
-     nombre: String,        
-     turno: {
-          type: Number,
-          default: 0
-     }
-}));    
+const mongoosePaginate = require('mongoose-paginate-v2');
+const MongooseAggregatePaginateV2 = require('mongoose-aggregate-paginate-v2');
+const Ciudad = mongoose.Schema(
+     {
+          nombre: String,
+          turno: {
+               type: Number,
+               default: 0
+          }
+     });
 
-module.exports = Ciudad;
+Ciudad.plugin(mongoosePaginate);
+Ciudad.plugin(MongooseAggregatePaginateV2);
+module.exports = mongoose.model('ciudad', Ciudad);

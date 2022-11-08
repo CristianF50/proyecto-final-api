@@ -24,7 +24,7 @@ db.mongoose
     });
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: "http://localhost:3000"
 };
 app.use(cors(corsOptions));
 //Para procesar solicitudes de tipo JSON
@@ -39,8 +39,8 @@ app.get("/", (req, res) => {
 //Rutas
 require('./app/routes/auth.routes')(app);
 require('./app/routes/usuario.routes')(app);
-require('./app/routes/producto.routes')(app);
-require('./app/routes/transaccion.routes')(app);
+require('./app/routes/ciudad.routes')(app);
+require('./app/routes/turno.routes')(app);
 
 // Establecer el puesto de escucha de solicitudes
 const PORT = process.env.PORT || 4000;

@@ -1,6 +1,7 @@
 const config = require("../config/auth.config");
 const { producto } = require("../models");
 const db = require("../models");
+const Ciudad = db.ciudad;
 const Producto = db.producto;
 
 exports.list = async ({query}, res) => {
@@ -10,7 +11,7 @@ exports.list = async ({query}, res) => {
 
     let pipeline = [
         {
-            $sort: {nombre: 1}
+            $sort: {createdAt: 1}
         }
     ]
     if (query.buscar) {
@@ -19,8 +20,7 @@ exports.list = async ({query}, res) => {
                 $and: [
                     {
                         $or: [
-                            { descripcion: new RegExp(buscar, "i") },
-                            { sku: new RegExp(buscar, "i") },
+                            { nombre: new RegExp(buscar, "i") },
                         ]
                     },
                 ]
@@ -29,18 +29,18 @@ exports.list = async ({query}, res) => {
         })
     }
 
-    let productos = await Producto.aggregate(pipeline);
+    let ciudad = await Ciudad.aggregate(pipeline);
 
 
     return res.status(200).json({
         success: true,
         message: 'Consulta exitosa',
-        data: productos
+        data: ciudad
     })
   
 };
 
-exports.get = async ({query}, res) => {
+/* exports.get = async ({query}, res) => {
     
     const body = query;
 
@@ -63,21 +63,32 @@ exports.get = async ({query}, res) => {
                 message: 'No existe el producto.',
             })
         }
-};
+}; */
 
 
-exports.add = async (req, res) => {
+/* exports.add = async (req, res) => {
 
-    let producto = new Producto(req.body);
+    let transaccion = new Transaccion(req.body);
+
+    let carrito = req.body.carrito
+
+    carrito.map((item) => {
+        Producto.findOne({_id: item.producto_id}).then(
+            async (producto) => {
+                producto.cantidad = producto.cantidad - item.cantidad
+                await producto.save()
+            }
+        )
+    })
 
     console.log('new servicio', req.body);
 
-    producto.save()
-        .then(async producto => {
+    transaccion.save()
+        .then(async transaccion => {
             console.log("chichepudo")
             return res.status(200).json({
                 success: true,
-                message: "Producto creado exitosamente"
+                message: "Transaccion creada exitosamente"
             })
         })
         .catch(async error => {
@@ -87,9 +98,9 @@ exports.add = async (req, res) => {
                 message: (error)
             })
         })
-};
+}; */
 
-exports.update = async (req, res) => {
+/* exports.update = async (req, res) => {
     let body = req.body
 
     Producto.findOne({ _id: body.id })
@@ -121,4 +132,4 @@ exports.update = async (req, res) => {
             })
     })
     .catch((err) => response.status(404).json({ err, message: 'Producto no encontrado!' }));
-}
+} */
