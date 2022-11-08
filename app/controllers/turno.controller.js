@@ -6,14 +6,14 @@ const Turno = db.turno;
 const Producto = db.producto;
 const Ciudad = db.ciudad;
 
-exports.list = async ({query}, res) => {
+exports.list = async ({ query }, res) => {
 
     let body = query
     let buscar = (query.buscar == undefined) ? '.*' : query.buscar + '.*'
 
     let pipeline = [
         {
-            $sort: {fecha: 1}
+            $sort: { fecha: 1 }
         }
     ]
     if (query.buscar) {
@@ -60,17 +60,17 @@ exports.list = async ({query}, res) => {
         message: 'Consulta exitosa',
         data: turnos
     })
-  
+
 };
 
-exports.add = async ({body}, res) => {
+exports.add = async ({ body }, res) => {
 
     const ciudad = await Ciudad.findOne({ _id: ObjectId(body.ciudad) })
     console.log(ciudad)
 
     let noturno = ciudad.turno + 1
 
-    
+
 
 
     const turno = new Turno({
@@ -107,4 +107,59 @@ exports.add = async ({body}, res) => {
     })
 
     console.log(body)
+}
+
+exports.consulta = async ({ query }, res) => {
+
+    let turno = await Turno.findOne({ curp: query.curp, turno: query.turno })
+
+    if (!turno) {
+        return res.status(404).json({
+            success: false,
+            message: 'No se encontro el turno',
+            data: turno
+        })
+    }
+    return res.status(200).json({
+        success: true,
+        message: 'Consulta exitosa',
+        data: turno
+    })
+
+};
+
+exports.update = async ({ body }, res) => {
+
+    console.log(body)
+
+    let turno = await Turno.findOne({ _id: ObjectId(body._id) })
+    console.log(turno)
+    if (turno != null) {
+
+        if (body.nombres) turno.nombres = body.nombres;
+        if (body.nombre_tramite) turno.nombre_tramite = body.nombre_tramite;
+        if (body.materno) turno.materno = body.materno;
+        if (body.paterno) turno.paterno = body.paterno;
+        if (body.telefono) turno.telefono = body.telefono;
+        if (body.celular) turno.celular = body.celular;
+        if (body.correo) turno.correo = body.correo;
+        if (body.curp) turno.curp = body.curp;
+        if (body.ciudad) turno.ciudad = ObjectId(body.ciudad);
+        if (body.nivel) turno.nivel = body.nivel;
+        if (body.asuntos) turno.asuntos = body.asuntos;
+
+    }
+
+    turno.save().then((turno) => {
+        return res.status(200).json({
+            success: true,
+            message: "Turno actualizado"
+        })
+    }).catch((err) => {
+        console.log("error", err)
+        return res.status(400).json({
+            success: false,
+            message: "Cliente No actualizado"
+        })
+    })
 }

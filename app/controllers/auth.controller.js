@@ -59,12 +59,13 @@ exports.registro = (req, res) => {
 };
 
 exports.iniciarSesion = (req, res) => {
-  console.log(req);
+  console.log(req.body);
   Usuario.findOne({
-    usuario: req.body.usuario
+    email: req.body.email
   })
     .populate("roles", "-__v")
     .exec((err, usuario) => {
+      console.log(usuario);
       if (err) {
         res.status(500).send({ message: err });
         return;
@@ -73,7 +74,7 @@ exports.iniciarSesion = (req, res) => {
         return res.status(404).send({ message: "El usuario no se ha encontrado." });
       }
       var passwordIsValid = bcrypt.compareSync(
-        req.body.clave,
+        req.body.password,
         usuario.clave
       );
       if (!passwordIsValid) {
@@ -82,7 +83,7 @@ exports.iniciarSesion = (req, res) => {
           message: "La contraseña es invalida!"
         });
       }
-      var token = jwt.sign({ id: usuario.id }, config.secret, {
+      var token = jwt.sign({ _id: usuario._id }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
       var authorities = [];
