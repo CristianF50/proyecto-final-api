@@ -1,5 +1,6 @@
 const db = require("../models");
 const Usuarios = db.usuario;
+var bcrypt = require("bcryptjs");
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
@@ -67,7 +68,7 @@ exports.list = async ({ query }, res) => {
 
 exports.add = async ({ body }, response) => {
 
-
+    console.log()
     body.password = bcrypt.hashSync(body.password, 8);
 
     let user = new Usuarios(body);
