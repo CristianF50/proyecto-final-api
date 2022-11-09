@@ -10,8 +10,10 @@ module.exports = function(app) {
   });
   app.post("/api/turno/", controller.add);
   app.get("/api/turnos/", controller.list);
+  app.put("/api/turnos/update", controller.update);
   app.get("/api/turno/consulta", controller.consulta);
-  app.put("/api/turno/update", controller.update);
+  app.put("/api/turno/consulta/update", controller.updateConsulta);
+  app.delete("/api/turno/delete", [authJwt.verificarToken], controller.delete)
   /* app.get("/api/producto/get", [authJwt.verificarToken, authJwt.esAdmin], controller.get);
   app.put("/api/producto/update", [authJwt.verificarToken, authJwt.esAdmin], controller.update); */
   

@@ -143,6 +143,43 @@ exports.consulta = async ({ query }, res) => {
 
 };
 
+exports.updateConsulta = async ({ body }, res) => {
+
+    console.log(body)
+
+    let turno = await Turno.findOne({ _id: ObjectId(body._id) })
+    console.log(turno)
+    if (turno != null) {
+
+        if (body.nombres) turno.nombres = body.nombres;
+        if (body.nombre_tramite) turno.nombre_tramite = body.nombre_tramite;
+        if (body.materno) turno.materno = body.materno;
+        if (body.paterno) turno.paterno = body.paterno;
+        if (body.telefono) turno.telefono = body.telefono;
+        if (body.celular) turno.celular = body.celular;
+        if (body.correo) turno.correo = body.correo;
+        if (body.curp) turno.curp = body.curp;
+        if (body.ciudad) turno.ciudad = ObjectId(body.ciudad);
+        if (body.nivel) turno.nivel = body.nivel;
+        if (body.asuntos) turno.asuntos = body.asuntos;
+
+
+    }
+
+    turno.save().then((turno) => {
+        return res.status(200).json({
+            success: true,
+            message: "Turno actualizado"
+        })
+    }).catch((err) => {
+        console.log("error", err)
+        return res.status(400).json({
+            success: false,
+            message: "Cliente No actualizado"
+        })
+    })
+}
+
 exports.update = async ({ body }, res) => {
 
     console.log(body)
@@ -162,6 +199,24 @@ exports.update = async ({ body }, res) => {
         if (body.ciudad) turno.ciudad = ObjectId(body.ciudad);
         if (body.nivel) turno.nivel = body.nivel;
         if (body.asuntos) turno.asuntos = body.asuntos;
+        if (body.estatus) {
+            if (body.estatus === turno.estatus) return
+            if (body.estatus != turno.estatus) {
+                if (turno.estatus == 0 && body.estatus == 1){
+                    let ciudad = await Ciudad.findOne({_id: turno.ciudad})
+                    ciudad.pendiente = ciudad.pendiente - 1
+                    ciudad.resuelto = ciudad.resuelto + 1
+                    ciudad.save()
+                }
+                if (turno.estatus == 1 && body.estatus == 0){
+                    let ciudad = await Ciudad.findOne({_id: turno.ciudad})
+                    ciudad.pendiente = ciudad.pendiente + 1
+                    ciudad.resuelto = ciudad.resuelto - 1
+                    ciudad.save()
+                }
+            }
+            turno.estatus = body.estatus;
+        }
 
     }
 
