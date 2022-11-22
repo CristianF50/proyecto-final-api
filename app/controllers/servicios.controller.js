@@ -26,7 +26,7 @@ exports.landing = async ({ query }, res) => {
 
 
 exports.list = async ({ query }, res) => {
-    
+
     let body = query
     let buscar = (query.buscar == undefined) ? '.*' : query.buscar + '.*'
 
@@ -80,6 +80,34 @@ exports.list = async ({ query }, res) => {
         message: 'Consulta exitosa',
         data: turnos
     })
+
+};
+
+exports.get = async ({ query }, response) => {
+
+    let usuario = await Usuarios.aggregate(
+        [
+            {
+                '$match': {
+                    '_id': new ObjectId(query.id)
+                }
+            }
+        ]
+    )
+
+    if (usuario != null) {
+        return response.status(200).json({
+            success: true,
+            message: 'Se ha encontrado el servicio',
+            data: usuario[0]
+        })
+    } else {
+        return response.status(400).json({
+            success: false,
+            message: 'No existe el servicio.',
+        })
+    }
+
 
 };
 
