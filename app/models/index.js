@@ -8,8 +8,8 @@ db.mongoose = mongoose;
 db.usuario = require("./usuario.model");
 db.rol = require("./rol.model");
 
-db.ciudad = require("./ciudad.model")
-db.turno = require("./turno.model")
+db.servicios = require("./servicio.model");
+db.sugerencias = require("./sugerencias.model");
 
 
 

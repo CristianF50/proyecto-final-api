@@ -4,5 +4,5 @@
 module.exports = {
     HOST: "localhost",
     PORT: 27017,
-    DB: "turnos_db"
+    DB: "hosting_db"
   };

@@ -6,7 +6,7 @@ const dbConfig = require("./app/config/db.config");
 const Usuario = require("./app/models/usuario.model");
 var bcrypt = require("bcryptjs");
 const { usuario } = require("./app/models");
-const Ciudad = require("./app/models/ciudad.model");
+
 
 const Rol = db.rol
 db.mongoose
@@ -41,6 +41,7 @@ require('./app/routes/auth.routes')(app);
 require('./app/routes/usuario.routes')(app);
 require('./app/routes/ciudad.routes')(app);
 require('./app/routes/turno.routes')(app);
+require('./app/routes/servicios.routes')(app);
 
 // Establecer el puesto de escucha de solicitudes
 const PORT = process.env.PORT || 4000;
@@ -90,125 +91,5 @@ function initial() {
         }
     })
 
-    Ciudad.estimatedDocumentCount((err, count) => {
-        if (!err && count === 0 ) {
-            new Ciudad({
-                nombre:"Abasolo"
-            }).save()
-            new Ciudad({
-                nombre:"Acuña"
-            }).save()
-            new Ciudad({
-                nombre:"Allende"
-            }).save()
-            new Ciudad({
-                nombre:"Arteaga"
-            }).save()
-            new Ciudad({
-                nombre:"Candela"
-            }).save()
-            new Ciudad({
-                nombre:"Castaños"
-            }).save()
-            new Ciudad({
-                nombre:"Cuatro Ciénegas"
-            }).save()
-            new Ciudad({
-                nombre:"Escobedo"
-            }).save()
-            new Ciudad({
-                nombre:"Francisco I. Madero"
-            }).save()
-            new Ciudad({
-                nombre:"Frontera"
-            }).save()
-            new Ciudad({
-                nombre:"General Cepeda"
-            }).save()
-            new Ciudad({
-                nombre:"Guerrero"
-            }).save()
-            new Ciudad({
-                nombre:"Hidalgo"
-            }).save()
-            new Ciudad({
-                nombre:"Jiménez"
-            }).save()
-            new Ciudad({
-                nombre:"Juárez"
-            }).save()
-            new Ciudad({
-                nombre:"Lamadrid"
-            }).save()
-            new Ciudad({
-                nombre:"Matamoros"
-            }).save()
-            new Ciudad({
-                nombre:"Monclova"
-            }).save()
-            new Ciudad({
-                nombre:"Morelos"
-            }).save()
-            new Ciudad({
-                nombre:"Múzquiz"
-            }).save()
-            new Ciudad({
-                nombre:"Nadadores"
-            }).save()
-            new Ciudad({
-                nombre:"Nava"
-            }).save()
-            new Ciudad({
-                nombre:"Ocampo"
-            }).save()
-            new Ciudad({
-                nombre:"Parras"
-            }).save()
-            new Ciudad({
-                nombre:"Piedras Negras"
-            }).save()
-            new Ciudad({
-                nombre:"Progreso"
-            }).save()
-            new Ciudad({
-                nombre:"Ramos Arizpe"
-            }).save()
-            new Ciudad({
-                nombre:"Sabinas"
-            }).save()
-            new Ciudad({
-                nombre:"Sacramento"
-            }).save()
-            new Ciudad({
-                nombre:"Saltillo"
-            }).save()
-            new Ciudad({
-                nombre:"San Buenaventura"
-            }).save()
-            new Ciudad({
-                nombre:"San Juan de Sabinas"
-            }).save()
-            new Ciudad({
-                nombre:"San Pedro"
-            }).save()
-            new Ciudad({
-                nombre:"Sierra Mojada"
-            }).save()
-            new Ciudad({
-                nombre:"Torreón"
-            }).save()
-            new Ciudad({
-                nombre:"Viesca"
-            }).save()
-            new Ciudad({
-                nombre:"Villa Unión"
-            }).save()
-            new Ciudad({
-                nombre:"Zaragoza"
-            }).save().then(() => {
-                console.log("se agregaron las ciudades")
-            })
-        }
-    })
 
 }
