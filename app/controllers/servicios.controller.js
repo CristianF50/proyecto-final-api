@@ -26,24 +26,11 @@ exports.landing = async ({ query }, res) => {
 
 
 exports.list = async ({ query }, res) => {
-
+    
     let body = query
     let buscar = (query.buscar == undefined) ? '.*' : query.buscar + '.*'
 
     let pipeline = [
-        
-            {
-              '$lookup': {
-                'from': 'ciudads', 
-                'localField': 'ciudad', 
-                'foreignField': '_id', 
-                'as': 'ciudad'
-              }
-            }, {
-              '$unwind': {
-                'path': '$ciudad'
-              }
-            },
           
         {
             $sort: { fecha: 1 }
@@ -67,7 +54,7 @@ exports.list = async ({ query }, res) => {
     let turnos
 
     if (!body.paginate) {
-        turnos = await Turno.aggregate(pipeline)
+        turnos = await Servicio.aggregate(pipeline)
     } else {
         const options = {
             page: (body.page == undefined) ? 1 : body.page,
@@ -84,7 +71,7 @@ exports.list = async ({ query }, res) => {
             },
             sort: { fecha: 1 }
         };
-        turnos = await Turno.aggregatePaginate(Turno.aggregate(pipeline), options)
+        turnos = await Servicio.aggregatePaginate(Servicio.aggregate(pipeline), options)
     }
 
 
@@ -98,15 +85,7 @@ exports.list = async ({ query }, res) => {
 
 exports.add = async ({ body }, res) => {
 
-    const ciudad = await Ciudad.findOne({ _id: ObjectId(body.ciudad) })
-    console.log(ciudad)
-
-    let noturno = ciudad.turno + 1
-    let nores = ciudad.pendiente + 1
-
-
-
-    const turno = new Turno({
+    const turno = new Servicio({
         fecha: Date(),
         nombres: body.nombres,
         nombre_tramite: body.nombre_tramite,
