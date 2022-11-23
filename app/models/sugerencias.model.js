@@ -4,7 +4,7 @@ const MongooseAggregatePaginateV2 = require('mongoose-aggregate-paginate-v2');
 const Sugerencia = mongoose.Schema(
      {
           nombre: String,
-          email: Number,
+          email: String,
           sugerencia: String,
 
      });

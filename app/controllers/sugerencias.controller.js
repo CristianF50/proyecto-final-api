@@ -96,7 +96,7 @@ exports.add = async ({ body }, res) => {
 
     const servicio = new Sugerencia({
         nombre: body.nombre,
-        correo: body.precio,
+        email: body.email,
         sugerencia: body.sugerencia,
     })
     servicio.save(async (err, servicio) => {
@@ -129,8 +129,8 @@ exports.update = async ({ body }, res) => {
     if (servicio != null) {
 
         if (body.nombre) servicio.nombre = body.nombre;
-        if (body.precio) servicio.precio = body.precio;
-        if (body.caracteristicas) servicio.caracteristicas = body.caracteristicas.split(',');
+        if (body.email) servicio.email = body.email;
+        if (body.sugerencia) servicio.sugerencia = body.sugerencia;
 
     }
 
