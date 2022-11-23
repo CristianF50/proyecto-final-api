@@ -13,8 +13,8 @@ module.exports = function(app) {
   app.get     ("/api/servicios/landing",                                    controller.landing);
   app.get     ("/api/servicios",                  [authJwt.verificarToken], controller.list);
   app.get     ("/api/servicios/get",              [authJwt.verificarToken], controller.get);
-  /*app.post    ('/api/servicios/add',              [authJwt.verificarToken], controller.add)
+  app.post    ('/api/servicios/add',              [authJwt.verificarToken], controller.add)
   app.put     ('/api/servicios/update',           [authJwt.verificarToken], controller.update)
-  app.delete  ('/api/servicios/delete',           [authJwt.verificarToken], controller.delete) */
+  app.delete  ('/api/servicios/delete',           [authJwt.verificarToken], controller.delete)
   
 };
