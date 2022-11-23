@@ -2,27 +2,8 @@ const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types;
 const config = require("../config/auth.config");
 const db = require("../models");
-const Servicio = db.servicios;
+const Sugerencia = db.sugerencias;
 
-
-
-exports.landing = async ({ query }, res) => {
-     
-    let pipeline = [
-        {
-          '$limit': 4
-        }
-      ]
-
-    let servicios = await Servicio.aggregate(pipeline)
-
-    return res.status(200).json({
-        success: true,
-        message: 'Consulta exitosa',
-        data: servicios
-    })
-
-}
 
 
 exports.list = async ({ query }, res) => {
@@ -54,7 +35,7 @@ exports.list = async ({ query }, res) => {
     let turnos
 
     if (!body.paginate) {
-        turnos = await Servicio.aggregate(pipeline)
+        turnos = await Sugerencia.aggregate(pipeline)
     } else {
         const options = {
             page: (body.page == undefined) ? 1 : body.page,
@@ -71,7 +52,7 @@ exports.list = async ({ query }, res) => {
             },
             sort: { fecha: 1 }
         };
-        turnos = await Servicio.aggregatePaginate(Servicio.aggregate(pipeline), options)
+        turnos = await Sugerencia.aggregatePaginate(Sugerencia.aggregate(pipeline), options)
     }
 
 
@@ -85,7 +66,7 @@ exports.list = async ({ query }, res) => {
 
 exports.get = async ({ query }, response) => {
 
-    let servicio = await Servicio.aggregate(
+    let sugerencia = await Sugerencia.aggregate(
         [
             {
                 '$match': {
@@ -95,11 +76,11 @@ exports.get = async ({ query }, response) => {
         ]
     )
 
-    if (servicio != null) {
+    if (sugerencia != null) {
         return response.status(200).json({
             success: true,
             message: 'Se ha encontrado el servicio',
-            data: servicio[0]
+            data: sugerencia[0]
         })
     } else {
         return response.status(400).json({
@@ -115,8 +96,8 @@ exports.add = async ({ body }, res) => {
 
     const servicio = new Servicio({
         nombre: body.nombre,
-        precio: body.precio,
-        caracteristicas: body.caracteristicas.split(','),
+        correo: body.precio,
+        sugerencia: body.sugerencia,
     })
     servicio.save(async (err, servicio) => {
         if (err) {
@@ -125,11 +106,11 @@ exports.add = async ({ body }, res) => {
             return;
         }
 
-        info = await Servicio.findOne({ _id: servicio._id })
+        info = await Sugerencia.findOne({ _id: servicio._id })
 
         res.status(200).json({
             success: true,
-            message: 'Servicio agregado con exito',
+            message: 'Sugerencia agregado con exito',
             data: info
         })
     })
@@ -143,7 +124,7 @@ exports.update = async ({ body }, res) => {
 
     console.log(body)
 
-    let servicio = await Servicio.findOne({ _id: ObjectId(body.id) })
+    let servicio = await Sugerencia.findOne({ _id: ObjectId(body.id) })
     console.log(servicio)
     if (servicio != null) {
 
@@ -156,20 +137,20 @@ exports.update = async ({ body }, res) => {
     servicio.save().then((turno) => {
         return res.status(200).json({
             success: true,
-            message: "Servicio actualizado"
+            message: "Sugerencia actualizado"
         })
     }).catch((err) => {
         console.log("error", err)
         return res.status(400).json({
             success: false,
-            message: "Servicio No actualizado"
+            message: "Sugerencia No actualizado"
         })
     })
 }
 
 exports.delete = async ({ query }, response) => {
     console.log(query)
-    await Servicio.deleteOne({ _id: query.id }).then(function () {
+    await Sugerencia.deleteOne({ _id: query.id }).then(function () {
         return response.status(200).json({
             success: true,
             message: 'Servicio Eliminado!'
