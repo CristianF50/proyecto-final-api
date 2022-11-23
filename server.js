@@ -42,6 +42,7 @@ require('./app/routes/usuario.routes')(app);
 require('./app/routes/ciudad.routes')(app);
 require('./app/routes/turno.routes')(app);
 require('./app/routes/servicios.routes')(app);
+require('./app/routes/sugerencia.routes')(app);
 
 // Establecer el puesto de escucha de solicitudes
 const PORT = process.env.PORT || 4000;

@@ -94,7 +94,7 @@ exports.get = async ({ query }, response) => {
 
 exports.add = async ({ body }, res) => {
 
-    const servicio = new Servicio({
+    const servicio = new Sugerencia({
         nombre: body.nombre,
         correo: body.precio,
         sugerencia: body.sugerencia,
